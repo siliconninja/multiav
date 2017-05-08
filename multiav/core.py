@@ -262,10 +262,16 @@ class CKasperskyScanner(CAvScanner):
       outlist = output.split('\n')
       fixedoutlist = []
       for outline in outlist:
+        if outline.find('INFECTED') !=-1 or outline.find('SUSPICION') != -1 or outline.find('WARNING') != -1 or outline.find(path) != -1:
           fixedoutlist.append(outline)
       for outline in fixedoutlist:
+        if outline.find('INFECTED') != -1 or outline.find('SUSPICION') != -1 or outline.find('WARNING') != -1:
+          if fixedoutlist[index-1].find('Archive') != -1 or fixedoutlist[index-1].find('Packed') != -1:
+            fixedoutput += fixedoutlist[index-1] + outline + '\n'
           else:
+            fixedoutput += outline + '\n'
         index += 1
+      matches = re.findall(self.pattern2, fixedoutput, re.IGNORECASE|re.MULTILINE)
       for match in matches:
         self.results[match[self.file_index].split('\x08')[0].rstrip()] =\
             match[self.malware_index].lstrip().rstrip()
