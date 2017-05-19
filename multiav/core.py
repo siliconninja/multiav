@@ -262,7 +262,7 @@ class CKasperskyScanner(CAvScanner):
       outlist = output.split('\n')
       fixedoutlist = []
       for outline in outlist:
-        if outline.find('INFECTED') !=-1 or outline.find('SUSPICION') != -1 or outline.find('WARNING') != -1 or outline.find(path) != -1:
+        if outline.find('INFECTED') !=-1 or outline.find('SUSPICION') != -1 or outline.find('WARNING') != -1 or outline.find(path.split('/')[-1]) != -1:
           fixedoutlist.append(outline)
       for outline in fixedoutlist:
         if outline.find('INFECTED') != -1 or outline.find('SUSPICION') != -1 or outline.find('WARNING') != -1:
