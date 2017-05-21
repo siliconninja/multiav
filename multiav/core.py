@@ -118,7 +118,7 @@ class CAvScanner:
     pattern = self.pattern
     matches = re.findall(pattern, output, re.IGNORECASE|re.MULTILINE)
     for match in matches:
-      self.results[match[self.file_index]] = match[self.malware_index]
+      self.results[match[self.file_index].split('/')[-1]] = match[self.malware_index]
     return len(self.results) > 0
 
   def is_disabled(self):
@@ -167,7 +167,7 @@ class CTrendmicroScanner(CAvScanner):
     matches1 = re.findall(self.pattern1, output, re.IGNORECASE|re.MULTILINE)
     matches2 = re.findall(self.pattern2, output, re.IGNORECASE|re.MULTILINE)
     for i in range(len(matches1)):
-      self.results[matches1[i].split(' (')[0]] = matches2[i]
+      self.results[matches1[i].split(' (')[0].split('/')[-1]] = matches2[i]
 
     return len(self.results) > 0
 #-----------------------------------------------------------------------
@@ -273,7 +273,7 @@ class CKasperskyScanner(CAvScanner):
         index += 1
       matches = re.findall(self.pattern2, fixedoutput, re.IGNORECASE|re.MULTILINE)
       for match in matches:
-        self.results[match[self.file_index].split('\x08')[0].rstrip()] =\
+        self.results[match[self.file_index].split('\x08')[0].rstrip().split('/')[-1]] =\
             match[self.malware_index].lstrip().rstrip()
     elif ver == "kav":
       matches = re.findall(self.pattern, output, re.IGNORECASE|re.MULTILINE)
@@ -454,7 +454,7 @@ class CMcAfeeScanner(CAvScanner):
       self.pattern = old_pattern
 
     for match in self.results:
-      self.results[match] = self.results[match].strip("the ")
+      self.results[match.split('/')[-1]] = self.results[match].strip("the ")
 
     return ret
 
@@ -489,7 +489,7 @@ class CAvgScanner(CAvScanner):
     matches = matches1 +matches2
     for match in matches:
       if match[1] not in ["file"]:
-        self.results[match[0].split(':/')[0]] = match[1]
+        self.results[match[0].split(':/')[0].split('/')[-1]] = match[1]
     return len(self.results) > 0
 
 # -----------------------------------------------------------------------
@@ -677,4 +677,3 @@ class CMultiAV:
       os.unlink(fname)
 
     return ret
-
