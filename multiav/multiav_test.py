@@ -16,7 +16,7 @@ def exeTime(func):
 @exeTime
 def call_multiav(scan_path):
     multi_av = CMultiAV('./config.cfg')
-    ret = multi_av.scan(scan_path, AV_SPEED_ALL)
+    ret = multi_av.multi_scan(scan_path, AV_SPEED_ALL)
     AV_result_list = []
     for file in os.listdir(scan_path):
         for AV_engin, AV_result in ret.items():
@@ -26,14 +26,13 @@ def call_multiav(scan_path):
         print '             '+ r
 
 def scan(path):
+    count = 1
+    total = len(os.listdir(path))
     for file_dir in os.listdir(path):
-        print file_dir + ':'
+        print '(%d/%d)%s :' % (count, total, file_dir)
         scan_path = os.path.join(path, file_dir)
-        #sta = time.time()
         call_multiav(scan_path)
-        #end = time.time()
-        #cost = end-sta
-        #print cost
+        count += 1
 
 if __name__ == "__main__":
     scan('/home/xiao/github/files')
