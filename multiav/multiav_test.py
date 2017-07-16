@@ -22,17 +22,18 @@ def call_multiav(scan_path):
         for AV_engin, AV_result in ret.items():
             for file_path, malware in AV_result.items():
                 AV_result_list.append('%s : %s : %s' % (file, AV_engin, malware))
+                break
     for r in AV_result_list:
         print '             '+ r
 
 def scan(path):
     count = 1
-    total = len(os.listdir(path))
-    for file_dir in os.listdir(path):
+    total = len(os.listdir(path)[0:300])
+    for file_dir in os.listdir(path)[0:300]:
         print '(%d/%d)%s :' % (count, total, file_dir)
         scan_path = os.path.join(path, file_dir)
         call_multiav(scan_path)
         count += 1
 
 if __name__ == "__main__":
-    scan('/home/xiao/github/files')
+    scan('/home/xiao/github/bulk_files')
