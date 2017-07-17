@@ -17,6 +17,7 @@ def call_multiav(scan_path):
     return AV_result_list
 
 def scan(path):
+    fmt = '\033[0;3{}m{}\033[0m'.format
     count = 1
     total_cost = 0.0
     total = len(os.listdir(path)[0:100])
@@ -26,12 +27,15 @@ def scan(path):
         t0 = time.time()
         AV_result_list = call_multiav(scan_path)
         cost = time.time() - t0
-        for r in AV_result_list:
-            print '             '+ r
+        if len(AV_result_list) != 0:
+            for r in AV_result_list:
+                print fmt(1, '             '+ r)
+        else:
+             print fmt(2, '             Clear')
         print "             %.3fs taken" % (time.time() - t0)
         count += 1
         total_cost += cost
-    ava_cost = total_cost/total
+    ava_cost = total_cost/88
     return ava_cost
 
 if __name__ == "__main__":
