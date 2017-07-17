@@ -5,15 +5,6 @@ import time
 import os
 from core import CMultiAV, AV_SPEED_ALL
 
-def exeTime(func):
-    def newFunc(*args, **args2):
-        t0 = time.time()
-        back = func(*args, **args2)
-        print "             %.3fs taken" % (time.time() - t0)
-        return back
-    return newFunc
-
-@exeTime
 def call_multiav(scan_path):
     multi_av = CMultiAV('./config.cfg')
     ret = multi_av.multi_scan(scan_path, AV_SPEED_ALL)
@@ -23,17 +14,26 @@ def call_multiav(scan_path):
             for file_path, malware in AV_result.items():
                 AV_result_list.append('%s : %s : %s' % (file, AV_engin, malware))
                 break
-    for r in AV_result_list:
-        print '             '+ r
+    return AV_result_list
 
 def scan(path):
     count = 1
-    total = len(os.listdir(path)[0:300])
-    for file_dir in os.listdir(path)[0:300]:
+    total_cost = 0.0
+    total = len(os.listdir(path)[0:100])
+    for file_dir in os.listdir(path)[0:100]:
         print '(%d/%d)%s :' % (count, total, file_dir)
         scan_path = os.path.join(path, file_dir)
-        call_multiav(scan_path)
+        t0 = time.time()
+        AV_result_list = call_multiav(scan_path)
+        cost = time.time() - t0
+        for r in AV_result_list:
+            print '             '+ r
+        print "             %.3fs taken" % (time.time() - t0)
         count += 1
+        total_cost += cost
+    ava_cost = total_cost/total
+    return ava_cost
 
 if __name__ == "__main__":
-    scan('/home/xiao/github/bulk_files')
+    re = scan('/home/xiao/text/')
+    print re
