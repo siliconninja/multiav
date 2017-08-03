@@ -18,7 +18,7 @@ setup(
     description="MultiAV scanner with Python and JSON API",
     author="Joxean Koret",
     author_email='admin@joxeankoret.com',
-    url='https://github.com/joxeankoret/multiav',
+    url='https://github.com/haruka-YNU/multiav',
     packages=[
         'multiav',
     ],
